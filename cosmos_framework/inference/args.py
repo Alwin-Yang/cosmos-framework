@@ -218,8 +218,13 @@ def reasoner_only_overrides() -> list[str]:
         # are downloaded lazily at tokenizer construction, so skipping it also
         # avoids a ~2.6 GiB download on a cold cache.
         "model.config.load_vision_tokenizer=false",
-        # VFM-level generation heads: time_embedder, proj_in/proj_out, action_*.
+        # VFM-level generation heads: time_embedder, proj_in/proj_out, action_*, sound_*.
+        # All three modality flags must fall together: ``Cosmos3VFMNetworkConfig``
+        # asserts that action and sound generation each imply vision generation, and
+        # Edge checkpoints ship with ``action_gen=true``.
         "model.config.vision_gen=false",
+        "model.config.action_gen=false",
+        "model.config.sound_gen=false",
         # The MoT generation tower (every ``*_moe_gen`` module): ~2.0 GiB resident.
         "model.config.vlm_config.model_instance.config.include_gen_pathway=false",
     ]

@@ -84,6 +84,10 @@ def test_reasoner_only_overrides_disable_every_generation_side_module(tmp_path: 
     assert model_dict.config.load_vision_tokenizer is False
     assert model_dict.config.vision_gen is False
     assert model_dict.config.vlm_config.model_instance.config.include_gen_pathway is False
+    # Cosmos3VFMNetworkConfig asserts action/sound generation each imply vision
+    # generation, so the three modality flags must be switched off together.
+    assert model_dict.config.action_gen is False
+    assert model_dict.config.sound_gen is False
 
 
 def test_build_parallelism(monkeypatch: pytest.MonkeyPatch):
